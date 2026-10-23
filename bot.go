@@ -203,10 +203,15 @@ func (b *Bot) handleSessionChat(s *discordgo.Session, m *discordgo.MessageCreate
 		return
 	}
 
+	// Snapshot the history BEFORE recording the new turn: ChatWithSession
+	// appends the prompt itself, so passing the post-AddMessage history would
+	// send the latest user message twice.
+	history := make([]DeepSeekMessage, len(session.Messages))
+	copy(history, session.Messages)
 	b.sessions.AddMessage(m.Author.ID, m.ChannelID, "user", messageContent)
 
 	stopTyping := startTyping(s, m.ChannelID)
-	response, err := b.ai.ChatWithSession(messageContent, session.Messages)
+	response, err := b.ai.ChatWithSession(messageContent, history)
 	stopTyping()
 
 	if err != nil {
