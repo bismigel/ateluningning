@@ -82,13 +82,12 @@ Bot: (reads the file and provides analysis)
 
 1. Clone the repository
 2. Install Go dependencies: `go mod download`
-3. Create a `.env` file with the following:
+3. Copy `.env.example` to `.env` and fill in the values (they live in
+   Bitwarden):
+   ```sh
+   cp .env.example .env
    ```
-   DISCORD_BOT_TOKEN=your_discord_bot_token
-   DEEPSEEK_API_KEY=your_deepseek_api_key
-   ADMIN_USER_IDS=user_id_1,user_id_2
-   DEBUG=false
-   ```
+   `.env` is gitignored — never commit real values.
 4. Build the bot: `go build -o bot`
 5. Run: `./bot`
 
